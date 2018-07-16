@@ -1,0 +1,14 @@
+#spring:
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8
+#
+#mybatis-plus:
+#  mapper-locations: classpath:/com/renzy/award/mapper/*Mapper.xml
+#  type-aliases-package: com.renzy.award.database
+#  global-config:
+#    id-type: 1
+#  #驼峰下划线转换
+##  db-column-underline: true
+#

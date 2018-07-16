@@ -1,0 +1,53 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.3.RELEASE'
+		springVersion = '5.0.7.RELEASE'
+	}
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.renzy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile("org.springframework:spring-aspects:${springVersion}")
+
+//	redis
+	compile('org.springframework.boot:spring-boot-starter-data-redis')
+	compile("redis.clients:jedis:2.9.0")
+
+//	mybatis-plus
+	compile('com.baomidou:mybatis-plus:2.3')
+	compile('com.baomidou:mybatis-plus-boot-starter:2.3')
+
+//	dataSource
+	compile("com.zaxxer:HikariCP:2.6.3")
+	runtime('mysql:mysql-connector-java')
+
+	compile('org.apache.commons:commons-lang3:3.7')
+
+//	generator
+	testCompile('org.freemarker:freemarker:2.3.28')
+
+
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}

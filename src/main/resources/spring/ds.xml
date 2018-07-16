@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <description>Spring DataSource configuration</description>
+
+    <!-- datasource -->
+    <bean id="saasSmartDs" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="${jdbc.datasouce.url}" />
+        <property name="username" value="${jdbc.datasouce.user}" />
+        <property name="password" value="${jdbc.datasouce.password}" />
+        <property name="maximumPoolSize" value="${jdbc.datasouce.maximumPoolSize}"/>
+    </bean>
+
+    <!-- transaction manager -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="saasSmartDs" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" mode="proxy"/>
+
+    <!-- mybatis factory -->
+    <bean id="saasSmartSqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="saasSmartDs"/>
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <property name="mapperLocations" value="classpath*:com/renzy/award/**/*.xml"/>
+        <property name="typeAliasesPackage" value="com.renzy.award.model.database"/>
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor"
+                      class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"/>
+                <!-- 乐观锁插件 -->
+                <!--<bean id="optimisticLockerInterceptor"
+                      class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor">
+                </bean>-->
+                <!-- 性能拦截器，兼打印sql，不建议生产环境配置-->
+                <bean id="performanceInterceptor"
+                      class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
+    <!-- scan mappers under the dao dir -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="saasSmartSqlSessionFactory"/>
+        <property name="basePackage" value="com.renzy.award.dao"/>
+    </bean>
+</beans>
