@@ -72,7 +72,7 @@ public class AwardApplicationTests {
 		dsc.setDriverName("com.mysql.jdbc.Driver");
 		dsc.setUsername("root");
 		dsc.setPassword("");
-		dsc.setUrl("jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8");
+		dsc.setUrl("jdbc:mysql://127.0.0.1:3306/db_award?characterEncoding=utf8");
 		mpg.setDataSource(dsc);
 
 		// 策略配置
@@ -81,12 +81,12 @@ public class AwardApplicationTests {
 		 strategy.setTablePrefix(new String[] {"t_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
 		strategy.setRestControllerStyle(true); // RestController风格
-		strategy.setInclude(new String[] { "t_user" }); // 需要生成的表
+//		strategy.setInclude(new String[] {}); // 需要生成的表
 		mpg.setStrategy(strategy);
 
 		// 包配置
 		PackageConfig pc = new PackageConfig();
-		pc.setParent("com.renzy");
+		pc.setParent("com.renzy.award");
 		pc.setModuleName("award");
 		pc.setController("controller");
 		pc.setEntity("model.database");
@@ -105,7 +105,7 @@ public class AwardApplicationTests {
 		focList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
 			@Override
 			public String outputFile(TableInfo tableInfo) {
-				return basePath+ "/resources/com/renzy/award/mapper/" + tableInfo.getEntityName() + "Mapper.xml";
+				return basePath+ "/resources/com/renzy/award/mapper/award/" + tableInfo.getEntityName() + "Mapper.xml";
 			}
 		});
 		cfg.setFileOutConfigList(focList);
